@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 
 @Injectable({
@@ -6,9 +7,9 @@ import {Observable} from "rxjs";
 })
 export class SampleService {
 
-  constructor() { }
+  constructor(private http:HttpClient) { }
 
-  public sampleAPICall(){
-    // return http.get("https://random-word-api.herokuapp.com/all");
+  public sampleAPICall():Observable<any>{
+    return this.http.get("https://random-word-api.herokuapp.com/all");
   }
 }
