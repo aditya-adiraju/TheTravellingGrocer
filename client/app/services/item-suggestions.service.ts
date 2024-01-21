@@ -24,7 +24,8 @@ export class ItemSuggestionsService{
 
   //update the suggestions when query changes
   updateItemSuggestions(query:string){
-    const filteredItems = this.items.filter((item)=>item.name.toLowerCase().includes(query.toLowerCase()))
-    this.itemSuggestions.next(filteredItems.map((item)=>item.name).slice(0,5))
+    console.log("Update items")
+    const result = this.database.getAllFilteredItems(query)
+    console.log(result);
   }
 }
