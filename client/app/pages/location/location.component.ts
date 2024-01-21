@@ -3,19 +3,17 @@ import { TextFieldComponent } from 'client/app/shared/text-field/text-field.comp
 import { OutlineButtonComponent } from 'client/app/shared/outline-button/outline-button.component';
 import { Router } from '@angular/router';
 @Component({
-  selector: 'app-signin-page',
+  selector: 'app-location',
   standalone: true,
   imports: [TextFieldComponent,OutlineButtonComponent],
-  templateUrl: './signin-page.component.html',
-  styleUrl: './signin-page.component.css'
+  templateUrl: './location.component.html',
+  styleUrl: './location.component.css'
 })
-export class SigninPageComponent {
+export class LocationComponent {
   constructor(private router:Router){}
-  buttonText = "Go";
-  username = "UserName";
-  password = "Password";
-  goToLocation(){
-    console.log("Hello");
-    this.router.navigate(["location"]);
+  done = "Done";
+  goToShopping(){
+    this.router.navigate(["shopping"]);
+
   }
 }

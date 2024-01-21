@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Router } from 'express';
 
 @Component({
   selector: 'app-outline-button',
@@ -8,6 +9,7 @@ import { Component } from '@angular/core';
   styleUrl: './outline-button.component.css'
 })
 export class OutlineButtonComponent {
-    signun = "Signup";
+    @Input({required:true}) buttonText = '';
+   
     
 }

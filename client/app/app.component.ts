@@ -1,8 +1,9 @@
-import {Component,} from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {SampleService} from "./services/sample.service";
-import {ShoppingListComponent} from "./shared/shopping-list/shopping-list.component";
-
+import { SampleService } from "./services/sample.service";
+import { ShoppingListComponent } from "./shared/shopping-list/shopping-list.component";
+import { AuthModule } from '@auth0/auth0-angular';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,6 @@ import {ShoppingListComponent} from "./shared/shopping-list/shopping-list.compon
 })
 export class AppComponent {
   title = 'TheTravellingGrocer';
-  constructor(private sample:SampleService) {
-    sample.sampleAPICall().subscribe((value:any)=>console.log(value))
+  constructor() {
   }
 }

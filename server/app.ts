@@ -1,19 +1,20 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-
 import * as express from 'express';
 import * as path from 'path';
+const cors = require('cors');
 
 import { connectToMongo } from './mongo';
-import setRoutes from './routes';
+import dataRouter from './routes/data.router';
 
 const app = express();
-app.set('port', (process.env['PORT'] || 3000));
+app.use(cors())
+app.set('port', (process.env.PORT || 3000));
 app.use('/', express.static(path.join(__dirname, '../public')));
+app.use('/api/data', dataRouter)
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-setRoutes(app);
 
 const main = async (): Promise<void> => {
   try {
