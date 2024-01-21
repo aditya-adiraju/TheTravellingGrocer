@@ -25,17 +25,17 @@ export class ShoppingListComponent extends GarbageCollectorComponent implements 
     super();
   }
 
-  ngOnInit(): void {
-    ///////SAMPLE CODE
-    this.listManager.addItem("Eggs")
-    this.listManager.addItem("Bacon")
-    ///////SAMPLE CODE
+  closeShoppingWindow(){}
 
+  updateShoppingList(){
+    this.listManager.updateShoppingList()
+  }
+
+  ngOnInit(): void {
     this.listManager.getUpdatedShoppingList().pipe(
       takeUntil(this.unsubscribe)
     ).subscribe((list)=>{
       this.items = list.map((item)=>this.listManager.getItemData(item))
     })
   }
-
 }
