@@ -1,5 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+
 import { MappedinLocation, MappedinDestinationSet, getVenue, showVenue, MappedinPolygon, E_SDK_EVENT, Mappedin, MapView } from "@mappedin/mappedin-js";
+
 import { augmentedPolygonThings } from "./defaultThings";
 import productData from "./products.json";
 import {DataService} from "../../../main";
@@ -8,12 +10,14 @@ import { ShoppingListManagerService } from 'client/app/services/shopping-list-ma
 import {takeUntil} from "rxjs";
 import {GarbageCollectorComponent} from "../../shared/garbage-collector/garbage-collector.component";
 
+
 const options = {
   venue: "mappedin-demo-retail-2",
   clientId: "5eab30aa91b055001a68e996",
   clientSecret: "RJyRXKcryCMy4erZqqCbuB1NbR66QTGNXVE0x3Pg6oCIlUR1",
   things: augmentedPolygonThings // ensures polygon name is fetched
 };
+
 
 @Component({
   selector: 'app-map',
@@ -32,6 +36,7 @@ export class MapComponent extends GarbageCollectorComponent implements OnInit {
   test(){
     this.dataService.getAllItems().subscribe((data)=>console.log(data))
   }
+
 
   async ngOnInit(): Promise<void> {
     const venue = await getVenue(options);
@@ -74,10 +79,23 @@ export class MapComponent extends GarbageCollectorComponent implements OnInit {
       resultArray.push(products[startIndex - 1]);
     }
 
-    console.log(resultArray);
+
+    // //Turn the list of distance values into a list of items based on the 2D array
+    // let startIndex = 0;
+    // for (let i = 0; i < inputArray.length; i++) {
+    //   startIndex = twoDArray[startIndex].findIndex((num) => num == inputArray[i]);
+    //   resultArray.push(products[startIndex-1]);
+    // }
+
+
+    // console.log(resultArray);
+
+    
+
 
 
     const startLocation = venue.locations.find((l) => l.name == "Entrance")!;
+
 
     //Create an array of locations to use as waypoints for a
     //multi-destination journey.
@@ -87,11 +105,15 @@ export class MapComponent extends GarbageCollectorComponent implements OnInit {
       destinations.push(venue.polygons.find((p) => p.name === product?.polygonName)!);
     }
 
+
     console.log(destinations);
+
+
 
 
     //Get directions from the start location to all destinations.
     const directions = startLocation.directionsTo(new MappedinDestinationSet(destinations));
+
 
     //Pass the directions to Journey to be drawn on the map.
     //Set the paths as interactive so the user can click to
@@ -107,6 +129,7 @@ export class MapComponent extends GarbageCollectorComponent implements OnInit {
         color: "lightblue"
       }
     });
+
 
     //Clickable functionality here
     let step = 0;
@@ -152,4 +175,5 @@ export class MapComponent extends GarbageCollectorComponent implements OnInit {
     return twoDArray;
   }
 }
+
 
