@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { OutlineButtonComponent } from '../../shared/outline-button/outline-button.component';
-
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-landing-page',

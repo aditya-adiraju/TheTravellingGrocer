@@ -1,12 +1,16 @@
-import {Component, importProvidersFrom} from '@angular/core';
+import {Component,} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {SampleService} from "./services/sample.service";
+import {ShoppingListComponent} from "./shared/shopping-list/shopping-list.component";
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [
+    RouterOutlet,
+    ShoppingListComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
