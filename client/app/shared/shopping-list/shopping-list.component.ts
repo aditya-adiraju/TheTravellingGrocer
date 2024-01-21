@@ -5,13 +5,15 @@ import {GarbageCollectorComponent} from "../garbage-collector/garbage-collector.
 import {takeUntil} from "rxjs";
 import {NgForOf} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
+import {SearchItemsComponent} from "../search-items/search-items.component";
 
 @Component({
   selector: 'app-shopping-list',
   standalone: true,
   imports: [
     NgForOf,
-    MatIcon
+    MatIcon,
+    SearchItemsComponent
   ],
   templateUrl: './shopping-list.component.html',
   styleUrl: './shopping-list.component.css'

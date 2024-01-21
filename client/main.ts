@@ -21,7 +21,7 @@ export const routes: Routes = [
   { path: 'auth', component: AuthenticationPageComponent },
   { path: 'edit-shopping', component: EditShoppingListPageComponent },
   { path: 'signIn', component: SigninPageComponent },
-  { path: 'map', component: MapComponent , canActivate: [AuthGuard] },
+  { path: 'map', component: MapComponent },
   { path: 'location', component: LocationComponent },
   { path: 'shopping', component: ShoppingComponent },
 ];
@@ -48,7 +48,7 @@ export class DataService {
   }
 
   getAllFilteredItems(query: string): Observable<any[]> {
-    return this.http.post<any[]>(`${this.apiUrl}/getAllFilteredItems`, { query });
+    return this.http.post<any[]>(`${this.apiUrl}/getAllFilteredItems`, query);
   }
 }
 
@@ -60,7 +60,7 @@ bootstrapApplication(AppComponent, {
     },
     { provide: SampleService, useClass: SampleService },
     importProvidersFrom(RouterModule.forRoot([...routes])),
-    importProvidersFrom(HttpClientModule, BrowserModule, CommonModule),
-    provideAnimations(),
-  ],
-}).catch((err) => console.error(err));
+    importProvidersFrom(HttpClientModule, BrowserModule, CommonModule, ),
+    provideAnimations()
+],
+}).catch(err => console.error(err));
