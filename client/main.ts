@@ -56,6 +56,16 @@ export class DataService {
       headers: headers
     })
   }
+
+  getOptimalRoute(arr: number[][]) {
+    const headers = new HttpHeaders()
+          .set('Authorization', 'my-auth-token')
+          .set('Content-Type', 'application/json');
+
+    return this.http.post('http://localhost:3000/api/data/getOptimalRoute', JSON.stringify({array: arr}), {
+      headers: headers
+    })
+  }
 }
 
 bootstrapApplication(AppComponent, {
