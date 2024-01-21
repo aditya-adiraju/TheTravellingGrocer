@@ -42,8 +42,8 @@ export class DataService {
     return this.http.post<any>(`${this.apiUrl}/addItem`, item);
   }
 
-  deleteItem(id: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/deleteItem`, { id });
+  deleteItem(polygonName: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/deleteItem`, {polygonName});
   }
 
   getAllFilteredItems(query: string): Observable<any[]> {

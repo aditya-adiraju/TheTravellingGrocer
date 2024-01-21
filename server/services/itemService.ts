@@ -39,13 +39,21 @@ export const addItemToDb = async (
   return result;
 };
 
-export const deleteItemFromDb = async (id: string) => {
-  const deleteItem = async (id: string) => {
+export const deleteItemFromDb = async (polygonName: string) => {
+  const deleteItem = async (polygonName: string) => {
     try {
       await client.connect();
       const database = client.db("grocery_store");
       const items = database.collection('items');
 
+      const query0 = { polygonName: polygonName };
+      const result0 = await items.findOne(query0);
+      if (result0 === null) { 
+        console.log(`No item found with that polygonName ${polygonName}`);
+        return;
+      }
+
+      const id = result0._id;
       const query = { _id: new ObjectId(id) };
 
       const result = await items.deleteOne(query);
@@ -55,7 +63,7 @@ export const deleteItemFromDb = async (id: string) => {
       setTimeout(() => {client.close()}, 1500)
     }
   };
-  const result = await deleteItem(id);
+  const result = await deleteItem(polygonName);
   return result;
 };
 
