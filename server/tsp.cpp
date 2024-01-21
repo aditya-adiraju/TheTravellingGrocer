@@ -2,6 +2,7 @@
 #include <vector>
 #include <utility>
 #include <queue>
+#include <emscripten/bind.h>
 
 using std::vector;
 using std::pair;
@@ -81,4 +82,9 @@ int main(){
 
     for (auto i : order) std::cout << i << " ";  
     std::cout << std::endl;
+}
+
+EMSCRIPTEN_BINDINGS(tsp_module) {
+    emscripten::register_vector<int>("VectorInt");
+    emscripten::function("Solve", &Solve, emscripten::allow_raw_pointers());
 }
