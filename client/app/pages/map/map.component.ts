@@ -4,6 +4,9 @@ import { augmentedPolygonThings } from "./defaultThings";
 import productData from "./products.json";
 import {DataService} from "../../../main";
 import {ShoppingListComponent} from "../../shared/shopping-list/shopping-list.component";
+import { ShoppingListManagerService } from 'client/app/services/shopping-list-manager.service';
+import {takeUntil} from "rxjs";
+import {GarbageCollectorComponent} from "../../shared/garbage-collector/garbage-collector.component";
 
 const options = {
   venue: "mappedin-demo-retail-2",
@@ -21,8 +24,10 @@ const options = {
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
-export class MapComponent implements OnInit {
-  constructor(private dataService: DataService) {}
+export class MapComponent extends GarbageCollectorComponent implements OnInit {
+  constructor(private dataService: DataService, public shopService:ShoppingListManagerService){
+    super();
+  }
   test(){
     this.dataService.getAllItems().subscribe((data)=>console.log(data))
   }
@@ -31,19 +36,17 @@ export class MapComponent implements OnInit {
     const venue = await getVenue(options);
     const mapView = await showVenue(this.mapEl.nativeElement, venue);
 
+    let products = new Array();
+    this.shopService.getAccessibleShoppingList().pipe(
+      takeUntil(this.unsubscribe)
+    ).subscribe((list)=>{
+      products = list;
+    });
+    // resultArray = ["Unico Pasta Sauce, Original", "Tortillas", "Cadbury Caramilk Dome Cake"]; TEST 
 
-    // const start = venue.locations.find((l) => l.name == "Entrance")!;
 
-    // const product1 = productData[1];
-    // const destination = venue.polygons.find((p) => p.name === product1.polygonName)!
-
-    // setTimeout(() => console.log(venue.polygons), 2000);
-
-    // const directions = start.directionsTo(destination);
-    // mapView.Journey.draw(directions, {pathOptions: {nearRadius: 0.5, farRadius: 0.7}});
-
-    //SAMPLE STRING
-    let products: string[] = ["Unico Pasta Sauce, Original", "Tortillas", "Cadbury Caramilk Dome Cake"];
+    // //SAMPLE STRING
+    // let products: string[] = ["Unico Pasta Sauce, Original", "Tortillas", "Cadbury Caramilk Dome Cake"];
 
     //Size of 2D array is length +1 so for the starting entrance
     const size = products.length + 1;
@@ -76,11 +79,12 @@ export class MapComponent implements OnInit {
     }
 
     console.log(twoDArray);
+    let inputArray = new Array();
 
-    //SEND THE MATRIX TO THE ALGORITHM AND WAIT FOR IT HERE
+    // //SEND THE MATRIX TO THE ALGORITHM AND WAIT FOR IT HERE
 
-    //SAMPLE DISTANCE LIST
-    let inputArray = new Array(74.99069792009288, 32.04512374311785, 25.18052353582995);
+    // //SAMPLE DISTANCE LIST
+    // let inputArray = new Array(74.99069792009288, 32.04512374311785, 25.18052353582995);
     let resultArray = new Array();
 
     //Turn the list of distance values into a list of items based on the 2D array
