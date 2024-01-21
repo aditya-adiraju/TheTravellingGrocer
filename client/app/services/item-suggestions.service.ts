@@ -25,12 +25,7 @@ export class ItemSuggestionsService{
   //update the suggestions when query changes
   updateItemSuggestions(query:string){
     console.log("Update items")
-    this.database.getAllFilteredItems(query).pipe(
-      switchMap((result:any)=>{
-        console.log(result)
-        this.itemSuggestions.next([])
-        return this.itemSuggestions.asObservable()
-      })
-    ).subscribe();
+    const result = this.database.getAllFilteredItems(query)
+    result.subscribe((val)=>console.log(val));
   }
 }

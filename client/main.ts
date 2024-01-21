@@ -17,12 +17,11 @@ import { Observable } from 'rxjs';
 import { AuthGuard } from '@auth0/auth0-angular';
 
 export const routes: Routes = [
-  { path: '**', component: MapComponent , canActivate: [AuthGuard] },
   { path: '', component: LandingPageComponent },
   { path: 'auth', component: AuthenticationPageComponent },
   { path: 'edit-shopping', component: EditShoppingListPageComponent },
   { path: 'signIn', component: SigninPageComponent },
-  { path: 'map', component: MapComponent , canActivate: [AuthGuard] },
+  { path: 'map', component: MapComponent },
   { path: 'location', component: LocationComponent },
   { path: 'shopping', component: ShoppingComponent },
 ];
@@ -49,7 +48,7 @@ export class DataService {
   }
 
   getAllFilteredItems(query: string): Observable<any[]> {
-    return this.http.post<any[]>(`${this.apiUrl}/getAllFilteredItems`, { query });
+    return this.http.post<any[]>(`${this.apiUrl}/getAllFilteredItems`, query);
   }
 }
 
