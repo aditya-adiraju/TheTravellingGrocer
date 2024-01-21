@@ -26,6 +26,6 @@ export class ItemSuggestionsService{
   updateItemSuggestions(query:string){
     console.log("Update items")
     const result = this.database.getAllFilteredItems(query)
-    result.subscribe((val)=>console.log(val));
+    console.log(result);
   }
 }
