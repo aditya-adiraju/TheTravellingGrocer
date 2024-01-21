@@ -43,8 +43,9 @@ dataRouter.get('/deleteItem' , async (req: Request, res: Response) => {
     }
 });
 
-dataRouter.get('/getAllFilteredItems', async (req: Request, res: Response) => { 
+dataRouter.post('/getAllFilteredItems', async (req: Request, res: Response) => {
     try {
+        console.log("RESPONSE HEADER",req.body)
         const result = await getAllFilteredItemsFromDb(req.body.polygonName);
         res.send(result);
     } catch (error) {

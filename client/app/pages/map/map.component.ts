@@ -2,6 +2,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MappedinLocation, MappedinDestinationSet, getVenue, showVenue, MappedinPolygon, E_SDK_EVENT } from "@mappedin/mappedin-js";
 import { augmentedPolygonThings } from "./defaultThings";
 import productData from "./products.json";
+import {DataService} from "../../../main";
+import {ShoppingListComponent} from "../../shared/shopping-list/shopping-list.component";
 
 const options = {
   venue: "mappedin-demo-retail-2",
@@ -13,11 +15,17 @@ const options = {
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [],
+  imports: [
+    ShoppingListComponent
+  ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
 export class MapComponent implements OnInit {
+  constructor(private dataService: DataService) {}
+  test(){
+    this.dataService.getAllItems().subscribe((data)=>console.log(data))
+  }
 
   async ngOnInit(): Promise<void> {
     const venue = await getVenue(options);
@@ -36,8 +44,8 @@ export class MapComponent implements OnInit {
 
     //SAMPLE STRING
     let products: string[] = ["Unico Pasta Sauce, Original", "Tortillas", "Cadbury Caramilk Dome Cake"];
-    
-    //Size of 2D array is length +1 so for the starting entrance 
+
+    //Size of 2D array is length +1 so for the starting entrance
     const size = products.length + 1;
     let twoDArray: number[][] = Array.from({length:size}, () => Array(size).fill(0));
 
@@ -93,7 +101,7 @@ export class MapComponent implements OnInit {
     for (let i = 0; i < resultArray.length; i++) {
       let product = productData.find((w:any) => w.name === resultArray[i]);
       destinations.push(venue.polygons.find((p) => p.name === product?.polygonName)!);
-    }   
+    }
 
     console.log(destinations);
 

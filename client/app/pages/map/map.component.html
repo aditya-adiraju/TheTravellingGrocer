@@ -1,1 +1,16 @@
+<div class="drawer z-[1000] absolute">
+  <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content">
+    <!-- Page content here -->
+    <label for="my-drawer" class="btn btn-primary drawer-button">Open drawer</label>
+  </div>
+  <div class="drawer-side">
+    <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+    <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+      <!-- Sidebar content here -->
+      <app-shopping-list></app-shopping-list>
+    </ul>
+  </div>
+</div>
 <div id="app" #app></div>
+<button (click)="test()" class="btn btn-outline absolute top-1/2 left-1/2">Test</button>

@@ -48,7 +48,7 @@ export class DataService {
   }
 
   getAllFilteredItems(query: string): Observable<any[]> {
-    return this.http.post<any[]>(`${this.apiUrl}/getAllFilteredItems`, { query });
+    return this.http.post<any[]>(`${this.apiUrl}/getAllFilteredItems`, query);
   }
 }
 
@@ -60,7 +60,7 @@ bootstrapApplication(AppComponent, {
     },
     { provide: SampleService, useClass: SampleService },
     importProvidersFrom(RouterModule.forRoot([...routes])),
-    importProvidersFrom(HttpClientModule, BrowserModule, CommonModule),
-    provideAnimations(),
-  ],
-}).catch((err) => console.error(err));
+    importProvidersFrom(HttpClientModule, BrowserModule, CommonModule, ),
+    provideAnimations()
+],
+}).catch(err => console.error(err));
