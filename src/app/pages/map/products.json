@@ -1,0 +1,357 @@
+[
+    {
+      "name": "Pampers BABY-DRY diapers Size 2 112 count",
+      "description": "Box of ",
+      "price": null,
+      "polygonName": "polygon_727"
+    },
+    {
+      "name": "Unico Pasta Sauce, Original",
+      "description": "Pasta Sauce",
+      "price": "1.49",
+      "polygonName": "polygon_227"
+    },
+    {
+      "name": "Bioitalia Organic Pasta Spaghettini",
+      "description": "Pack of Pasta, \n500gr",
+      "price": "2.99",
+      "polygonName": "polygon_206"
+    },
+    {
+      "name": "Coca-Cola 2L",
+      "description": "Soda/Pop",
+      "price": "1.49",
+      "polygonName": "polygon_404"
+    },
+    {
+      "name": "Stonemill Cranberry Pumpkin Seed Bread",
+      "description": "Bread",
+      "price": "3.09",
+      "polygonName": "polygon_64"
+    },
+    {
+      "name": "Tortillas",
+      "description": "2.39",
+      "price": "9.99",
+      "polygonName": "polygon_196"
+    },
+    {
+      "name": "Dempster Wholegrains Bread, Multi-grain",
+      "description": "Sliced Loaf of ",
+      "price": null,
+      "polygonName": "polygon_875"
+    },
+    {
+      "name": "Country Harvest Sesame Bagel",
+      "description": "Pack of 6 bagels",
+      "price": "1.99",
+      "polygonName": "polygon_120"
+    },
+    {
+      "name": "Vachon 1/2 Moon Vanilla 6 Cakes",
+      "description": "Pack of 6 Cakes",
+      "price": "2.49",
+      "polygonName": "polygon_196"
+    },
+    {
+      "name": "Cadbury Caramilk Dome Cake",
+      "description": "Cake",
+      "price": "8.99",
+      "polygonName": "polygon_243"
+    },
+    {
+      "name": "Granny Smith Apples",
+      "description": "Fruit/Apples",
+      "price": "2.49",
+      "polygonName": "polygon_1031"
+    },
+    {
+      "name": "Navel Oranges, Medium",
+      "description": "Fruit/Oranges",
+      "price": "2.99",
+      "polygonName": "polygon_1030"
+    },
+    {
+      "name": "Fuyu Persimmon",
+      "description": "Fruit",
+      "price": "1.59",
+      "polygonName": "polygon_1082"
+    },
+    {
+      "name": "Organic Collard Greens",
+      "description": "Vegetables",
+      "price": "3.49",
+      "polygonName": "polygon_1133"
+    },
+    {
+      "name": "Greenhouse Peppers, Yellow",
+      "description": "Vegetable/Peppers",
+      "price": "1.39",
+      "polygonName": "polygon_1064"
+    },
+    {
+      "name": "Spaghetti Squash",
+      "description": "Vegetable",
+      "price": "2.89",
+      "polygonName": "polygon_1058"
+    },
+    {
+      "name": "Turnip",
+      "description": "Vegetable",
+      "price": "2.29",
+      "polygonName": "polygon_1102"
+    },
+    {
+      "name": "Green Swiss Chard",
+      "description": "Vegetable",
+      "price": "2.19",
+      "polygonName": "polygon_976"
+    },
+    {
+      "name": "Cauliflower",
+      "description": "Single Cauliflower",
+      "price": "3.99",
+      "polygonName": "polygon_1050"
+    },
+    {
+      "name": "Balderson Marble Cheddar",
+      "description": "Pack of cheddar cheese, 250g",
+      "price": "5.99",
+      "polygonName": "polygon_979"
+    },
+    {
+      "name": "Ziggy's Smoked Beef Pastrami",
+      "description": "Pastrami",
+      "price": "7.69",
+      "polygonName": "polygon_976"
+    },
+    {
+      "name": "Liberte Yogurt, Blueberry",
+      "description": "Yogurt",
+      "price": "2.49",
+      "polygonName": "polygon_1015"
+    },
+    {
+      "name": "Neilson 1% Milk (1 L)",
+      "description": "Carton of Milk",
+      "price": "2.49",
+      "polygonName": "polygon_1019"
+    },
+    {
+      "name": "Pork Shoulder",
+      "description": "Meat",
+      "price": "14.99",
+      "polygonName": "polygon_1011"
+    },
+    {
+      "name": "Go Wild, Wild Argentinian Shrimp",
+      "description": "Pack of Shrimp",
+      "price": "8.99",
+      "polygonName": "polygon_741"
+    },
+    {
+      "name": "sausages",
+      "description": "7.89",
+      "price": "7.89",
+      "polygonName": "polygon_1002"
+    },
+    {
+      "name": "La Roca Cake, Chocolate Truffle",
+      "description": "Cake",
+      "price": "12.19",
+      "polygonName": "polygon_503"
+    },
+    {
+      "name": "General Mills Cinnamon Toast Crunch",
+      "description": "Box of Cereal",
+      "price": "2.49",
+      "polygonName": "polygon_277"
+    },
+    {
+      "name": "Christie Oreo mini",
+      "description": "Cookies",
+      "price": "2.99",
+      "polygonName": "polygon_488"
+    },
+    {
+      "name": "Tostitos Tortilla Chips, Low Sodium",
+      "description": "Bag of chips",
+      "price": "1.99",
+      "polygonName": "polygon_502"
+    },
+    {
+      "name": "Tim Tam Biscuits, Dark",
+      "description": "Pack of Biscuits",
+      "price": "3.99",
+      "polygonName": "polygon_378"
+    },
+    {
+      "name": "Christie Honey Maid Honey Grahams",
+      "description": "Graham crackers",
+      "price": "1.99",
+      "polygonName": "polygon_976"
+    },
+    {
+      "name": "Duncan Hines Cake Mix, Fudge Marble",
+      "description": "Pack of cake mix",
+      "price": "3.49",
+      "polygonName": "polygon_431"
+    },
+    {
+      "name": "Huy Fong Chili Garlic Sauce",
+      "description": "Sauce",
+      "price": "3.47",
+      "polygonName": "polygon_471"
+    },
+    {
+      "name": "Hidden valley Greek Tzatziki",
+      "description": "Salad Dressing",
+      "price": "3.29",
+      "polygonName": "polygon_513"
+    },
+    {
+      "name": "Italpasta Total Spaghetti",
+      "description": "Pack of Spaghetti",
+      "price": "1.89",
+      "polygonName": "polygon_173"
+    },
+    {
+      "name": "Dececco Pasta Penne Lisce NO. 40",
+      "description": "Pasta",
+      "price": "1.49",
+      "polygonName": "polygon_168"
+    },
+    {
+      "name": "Kikkoman Panko Bread Crumbs",
+      "description": "Box of bread crumbs",
+      "price": "1.79",
+      "polygonName": "polygon_466"
+    },
+    {
+      "name": "La Grille Southern-Style BBQ",
+      "description": "BBQ Seasoning",
+      "price": "6.59",
+      "polygonName": "polygon_157"
+    },
+    {
+      "name": "Old El Paso Burrito Dinner Kit",
+      "description": "Burrito Kit",
+      "price": "9.89",
+      "polygonName": "polygon_557"
+    },
+    {
+      "name": "Betty Crocker Tuna Helper Au Gratin",
+      "description": "Pasta Kit",
+      "price": "2.49",
+      "polygonName": "polygon_703"
+    },
+    {
+      "name": "Kraft Dinner Original Macaroni & Cheese",
+      "description": "Mac and Cheese",
+      "price": "1.29",
+      "polygonName": "polygon_240"
+    },
+    {
+      "name": "Haribo Gold Bears",
+      "description": "Bag of candy/gummy bears",
+      "price": "4.29",
+      "polygonName": "polygon_666"
+    },
+    {
+      "name": "Pam Cooking Spray",
+      "description": "Cooking Spray",
+      "price": "4.19",
+      "polygonName": "polygon_679"
+    },
+    {
+      "name": "Aqua Star King Crab Legs",
+      "description": "Pack of crab legs",
+      "price": "14.49",
+      "polygonName": "polygon_892"
+    },
+    {
+      "name": "Mccain Crinkle Cut Fries",
+      "description": null,
+      "price": "4.19",
+      "polygonName": "polygon_803"
+    },
+    {
+      "name": "Irish Spring Body Wash, Original",
+      "description": "Body Wash",
+      "price": "6.59",
+      "polygonName": "polygon_1551"
+    },
+    {
+      "name": "Nivea Men Extra Moisture Shave Gel",
+      "description": "Shaving Gel/Cream",
+      "price": "11.29",
+      "polygonName": "polygon_1698"
+    },
+    {
+      "name": "Scope Classic Mouthwash, Original Formula",
+      "description": "Mouthwash",
+      "price": "7.89",
+      "polygonName": "polygon_1484"
+    },
+    {
+      "name": "Sensodyne Fresh Mint Toothpaste",
+      "description": "Toothpaste",
+      "price": "4.59",
+      "polygonName": "polygon_1701"
+    },
+    {
+      "name": "Buckley's Mixture",
+      "description": "Cough Syrup",
+      "price": "11.19",
+      "polygonName": "polygon_1426"
+    },
+    {
+      "name": "Almay one Coar, Get Up & Go, Black Brown",
+      "description": "Mascara",
+      "price": "14.97",
+      "polygonName": "polygon_1356"
+    },
+    {
+      "name": "Annabelle Blush On, Rosebud",
+      "description": "Blush",
+      "price": "8.59",
+      "polygonName": "polygon_1623"
+    },
+    {
+      "name": "Sunlight Lemon fresh Detergent",
+      "description": "Laundry Detergent",
+      "price": "17.89",
+      "polygonName": "polygon_1722"
+    },
+    {
+      "name": "Palmolive Dish Liquid, Original",
+      "description": "Dish Soap",
+      "price": "4.59",
+      "polygonName": "polygon_1315"
+    },
+    {
+      "name": "Glad Easy Tie Regular",
+      "description": "Garbage Bags",
+      "price": "4.49",
+      "polygonName": "polygon_1368"
+    },
+    {
+      "name": "Bic Correction Tape",
+      "description": "Single pack of correction tape",
+      "price": "3.89",
+      "polygonName": "polygon_1426"
+    },
+    {
+      "name": "Touch Natural Round Toothpicks Jar",
+      "description": "Toothpicks",
+      "price": "0.79",
+      "polygonName": "polygon_1247"
+    },
+    {
+      "name": "Scotties, Envirocar, Facial Tissues",
+      "description": "Box of Tissues",
+      "price": "4.59",
+      "polygonName": "polygon_885"
+    }
+  ]
+  

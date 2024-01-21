@@ -8,13 +8,17 @@ import {AuthenticationPageComponent} from "./app/pages/authentication-page/authe
 import {EditShoppingListPageComponent} from "./app/pages/edit-shopping-list-page/edit-shopping-list-page.component";
 import {LandingPageComponent} from "./app/pages/landing-page/landing-page.component";
 import {CommonModule} from "@angular/common";
-import {ShoppingListComponent} from "./app/shared/shopping-list/shopping-list.component";
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { SigninPageComponent } from './app/pages/signin-page/signin-page.component';
+import { MapComponent } from './app/pages/map/map.component';
 
 const routes: Routes = [
   { path: 'auth', component: AuthenticationPageComponent },
   { path: 'edit-shopping', component: EditShoppingListPageComponent },
-  { path:'**', component: LandingPageComponent}
+  { path:'**', component: LandingPageComponent},
+  { path: 'signIn',component: SigninPageComponent},
+  { path:'**', component: MapComponent}
+
 ];
 
 bootstrapApplication(AppComponent, {
