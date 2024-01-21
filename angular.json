@@ -26,6 +26,7 @@
             ],
             "styles": [
               "src/styles.css"
+              "node_modules/@mappedin/mappedin-js/lib/mappedin.css"
             ],
             "scripts": []
           },
@@ -91,5 +92,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "4e3be9af-8a87-463f-972c-c1236d4df849"
   }
 }
