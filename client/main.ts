@@ -14,13 +14,14 @@ import { MapComponent } from './app/pages/map/map.component';
 import { LocationComponent } from './app/pages/location/location.component';
 import { ShoppingComponent } from './app/pages/shopping/shopping.component';
 import { Observable } from 'rxjs';
+import { AuthGuard } from '@auth0/auth0-angular';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'auth', component: AuthenticationPageComponent },
   { path: 'edit-shopping', component: EditShoppingListPageComponent },
   { path: 'signIn', component: SigninPageComponent },
-  { path: 'map', component: MapComponent },
+  { path: 'map', component: MapComponent , canActivate: [AuthGuard] },
   { path: 'location', component: LocationComponent },
   { path: 'shopping', component: ShoppingComponent },
 ];
@@ -30,7 +31,7 @@ export const routes: Routes = [
 })
 
 export class DataService {
-  private apiUrl = 'http://localhost:4200/api/data'; // Change this to be more dynamic
+  private apiUrl = 'http://localhost:3000/api/data'; // Change this to be more dynamic
 
   constructor(private http: HttpClient) {}
 
