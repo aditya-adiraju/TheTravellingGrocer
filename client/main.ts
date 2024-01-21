@@ -13,11 +13,11 @@ import { SigninPageComponent } from './app/pages/signin-page/signin-page.compone
 import { MapComponent } from './app/pages/map/map.component';
 
 const routes: Routes = [
+  { path:'', component: LandingPageComponent},
   { path: 'auth', component: AuthenticationPageComponent },
   { path: 'edit-shopping', component: EditShoppingListPageComponent },
-  { path:'**', component: LandingPageComponent},
   { path: 'signIn',component: SigninPageComponent},
-  { path:'**', component: MapComponent}
+  { path:'map', component: MapComponent}
 
 ];
 
@@ -29,7 +29,7 @@ bootstrapApplication(AppComponent, {
     },
     { provide: SampleService, useClass: SampleService },
     importProvidersFrom(RouterModule.forRoot([...routes])),
-    importProvidersFrom(HttpClientModule, BrowserModule, CommonModule),
+    importProvidersFrom(HttpClientModule, BrowserModule, CommonModule, ),
     provideAnimations()
 ],
 }).catch(err => console.error(err));
