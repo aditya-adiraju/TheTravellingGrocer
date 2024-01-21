@@ -21,7 +21,7 @@ export const routes: Routes = [
   { path: 'auth', component: AuthenticationPageComponent },
   { path: 'edit-shopping', component: EditShoppingListPageComponent },
   { path: 'signIn', component: SigninPageComponent },
-  { path: 'map', component: MapComponent , canActivate: [AuthGuard] },
+  { path: 'map', component: MapComponent },
   { path: 'location', component: LocationComponent },
   { path: 'shopping', component: ShoppingComponent },
 ];
