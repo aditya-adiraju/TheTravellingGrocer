@@ -52,12 +52,19 @@ export class DataService {
           .set('Authorization', 'my-auth-token')
           .set('Content-Type', 'application/json');
 
-    this.http.post('http://localhost:3000/api/data/getAllFilteredItems', JSON.stringify({query: q}), {
+    return this.http.post('http://localhost:3000/api/data/getAllFilteredItems', JSON.stringify({query: q}), {
       headers: headers
     })
-    .subscribe(data => {
-      console.log(data);
-    });
+  }
+
+  getOptimalRoute(arr: number[][]) {
+    const headers = new HttpHeaders()
+          .set('Authorization', 'my-auth-token')
+          .set('Content-Type', 'application/json');
+
+    return this.http.post('http://localhost:3000/api/data/getOptimalRoute', JSON.stringify({array: arr}), {
+      headers: headers
+    })
   }
 }
 

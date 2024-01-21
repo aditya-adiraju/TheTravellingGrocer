@@ -1,6 +1,6 @@
 import {Injectable, OnInit} from '@angular/core';
 import {DataService} from "../../main";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Observable, takeUntil} from "rxjs";
 import {Item} from "../constants/Item";
 import { switchMap } from 'rxjs/operators';
 
@@ -24,8 +24,6 @@ export class ItemSuggestionsService{
 
   //update the suggestions when query changes
   updateItemSuggestions(query:string){
-    console.log("Update items")
-    const result = this.database.getAllFilteredItems(query)
-    console.log(result);
+    this.database.getAllFilteredItems(query).subscribe((val:any)=>this.itemSuggestions.next(val.map((item:any)=>item.name)))
   }
 }
