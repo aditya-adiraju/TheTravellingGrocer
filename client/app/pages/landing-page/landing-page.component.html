@@ -8,8 +8,9 @@
         <div class="bg-green-500 rounded-lg w-96 h-96 p-10">
           <h1 class="mb-5 text-5xl font-bold">The Traveling Grocer</h1>
           <p class="mb-5">NP Problem? No Problem.</p>
-          <button style="margin-right:10px;"class="btn btn-primary" (click) ="goToSignIn()">Sign In</button>
-          <button class="btn btn-primary" (click) ="gotonext()">Sign Up</button>
+          <app-outline-button [buttonText] = "signin" (click) ="goToSignIn()"></app-outline-button>
+          <app-outline-button [buttonText] = "signout" (click) ="gotonext()"></app-outline-button>
+          
           <p>no account? Make one here</p>
         </div>  
       

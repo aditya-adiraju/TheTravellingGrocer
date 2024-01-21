@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
   styleUrl: './landing-page.component.css'
 })
 export class LandingPageComponent {
+  signin = "Sign In";
+  signout = "Sign Out";
   constructor(private router:Router){}
   title = "The Traveling Grocer";
   gotonext(){
