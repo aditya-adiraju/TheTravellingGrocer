@@ -19,4 +19,8 @@ export class LandingPageComponent {
     this.router.navigate(["signIn"]);
 
   }
+  goToMap(){
+    console.log("Hello");
+    this.router.navigate(["map"]);
+  }
 }
