@@ -8,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './outline-button.component.css'
 })
 export class OutlineButtonComponent {
-
+    signun = "Signup";
+    
 }
