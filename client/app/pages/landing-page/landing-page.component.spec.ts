@@ -1,14 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LandingPageComponent } from './landing-page.component';
-
+import { LoginButtonComponent } from 'client/app/shared/login-button/login-button.component';
+import { LogoutButtonComponent } from 'client/app/shared/logout-button/logout-button.component';
 describe('LandingPageComponent', () => {
   let component: LandingPageComponent;
   let fixture: ComponentFixture<LandingPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LandingPageComponent,]
+      imports: [LandingPageComponent,LoginButtonComponent,LogoutButtonComponent]
     })
     .compileComponents();
     
