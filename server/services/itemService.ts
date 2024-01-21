@@ -2,7 +2,7 @@ import { MongoClient, ObjectId} from 'mongodb';
 import Item from '../models/item';
 
 const uri = process.env['MONGODB_URI'] as string;
-const db_name = process.env['DB_NAME'] as string;
+const db_name = "grocery_store";
 
 const client = new MongoClient(uri);
 
@@ -32,30 +32,38 @@ export const addItemToDb = async (
       console.log(`A document was inserted with the _id: ${result.insertedId}`);
       return result;
     } finally {
-      await client.close();
+      setTimeout(() => {client.close()}, 15)
     }
   };
   const result = await insert(name, description, price, polygon);
   return result;
 };
 
-export const deleteItemFromDb = async (id: string) => {
-  const deleteItem = async (id: string) => {
+export const deleteItemFromDb = async (polygonName: string) => {
+  const deleteItem = async (polygonName: string) => {
     try {
       await client.connect();
-      const database = client.db(db_name);
+      const database = client.db("grocery_store");
       const items = database.collection('items');
 
+      const query0 = { polygonName: polygonName };
+      const result0 = await items.findOne(query0);
+      if (result0 === null) { 
+        console.log(`No item found with that polygonName ${polygonName}`);
+        return;
+      }
+
+      const id = result0._id;
       const query = { _id: new ObjectId(id) };
 
       const result = await items.deleteOne(query);
       console.log(`${result.deletedCount} document(s) deleted`);
       return result;
     } finally {
-      await client.close();
+      setTimeout(() => {client.close()}, 1500)
     }
   };
-  const result = await deleteItem(id);
+  const result = await deleteItem(polygonName);
   return result;
 };
 
@@ -76,11 +84,12 @@ export const getAllItemsFromDb = async () => {
           polygonName: 1,
         },
       };
-      const cursor = items.find(query, options);
-      const result = cursor.toArray();
+      const result = items.find(query, options).toArray();
+      console.log(result);
       return result;
-    } finally {
-      await client.close();
+      
+    }   finally {
+      setTimeout(() => {client.close()}, 1500)
     }
   };
   const result = await getAll();
@@ -122,7 +131,8 @@ export const getAllFilteredItemsFromDb = async (query: string)   => {
       const result = cursor.toArray();
       return result;
     } finally {
-      await client.close();
+      
+      setTimeout(() => {client.close()}, 1500)
     }
   };
   const result = await getAll(query);
