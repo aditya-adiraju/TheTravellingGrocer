@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 import {ShoppingListManagerService} from "../../services/shopping-list-manager.service";
@@ -18,6 +18,8 @@ import {takeUntil} from "rxjs";
   styleUrl: './search-items.component.css'
 })
 export class SearchItemsComponent extends GarbageCollectorComponent implements OnInit{
+  @Output() close: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   searchTerm: string = "";
   filteredItems: string[] = ["Bob", "Jimmy", "Pearl", "Davies", "Edgar"];
   showSuggestions: boolean = false;
@@ -48,5 +50,10 @@ export class SearchItemsComponent extends GarbageCollectorComponent implements O
 
     //Add item to shopping list
     this.listManager.addItem(item);
+  }
+
+  updateShoppingList(){
+    this.listManager.updateShoppingList()
+    this.close.emit(true)
   }
 }
