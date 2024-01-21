@@ -7,11 +7,12 @@ import {SampleService} from "./app/services/sample.service";
 import {AuthenticationPageComponent} from "./app/pages/authentication-page/authentication-page.component";
 import {EditShoppingListPageComponent} from "./app/pages/edit-shopping-list-page/edit-shopping-list-page.component";
 import {LandingPageComponent} from "./app/pages/landing-page/landing-page.component";
+import { MapComponent } from './app/pages/map/map.component';
 
 const routes: Routes = [
   { path: 'auth', component: AuthenticationPageComponent },
   { path: 'edit-shopping', component: EditShoppingListPageComponent },
-  { path:'**', component: LandingPageComponent}
+  { path:'**', component: MapComponent}
 ];
 
 bootstrapApplication(AppComponent, {
