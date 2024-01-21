@@ -2,7 +2,7 @@ import { MongoClient, ObjectId} from 'mongodb';
 import Item from '../models/item';
 
 const uri = process.env['MONGODB_URI'] as string;
-const db_name = process.env['DB_NAME'] as string;
+const db_name = "grocery_store";
 
 const client = new MongoClient(uri);
 
@@ -32,7 +32,7 @@ export const addItemToDb = async (
       console.log(`A document was inserted with the _id: ${result.insertedId}`);
       return result;
     } finally {
-      await client.close();
+      setTimeout(() => {client.close()}, 15)
     }
   };
   const result = await insert(name, description, price, polygon);
@@ -43,7 +43,7 @@ export const deleteItemFromDb = async (id: string) => {
   const deleteItem = async (id: string) => {
     try {
       await client.connect();
-      const database = client.db(db_name);
+      const database = client.db("grocery_store");
       const items = database.collection('items');
 
       const query = { _id: new ObjectId(id) };
@@ -52,7 +52,7 @@ export const deleteItemFromDb = async (id: string) => {
       console.log(`${result.deletedCount} document(s) deleted`);
       return result;
     } finally {
-      await client.close();
+      setTimeout(() => {client.close()}, 1500)
     }
   };
   const result = await deleteItem(id);
@@ -76,11 +76,12 @@ export const getAllItemsFromDb = async () => {
           polygonName: 1,
         },
       };
-      const cursor = items.find(query, options);
-      const result = cursor.toArray();
+      const result = items.find(query, options).toArray();
+      console.log(result);
       return result;
-    } finally {
-      await client.close();
+      
+    }   finally {
+      setTimeout(() => {client.close()}, 1500)
     }
   };
   const result = await getAll();
@@ -122,7 +123,8 @@ export const getAllFilteredItemsFromDb = async (query: string)   => {
       const result = cursor.toArray();
       return result;
     } finally {
-      await client.close();
+      
+      setTimeout(() => {client.close()}, 1500)
     }
   };
   const result = await getAll(query);
