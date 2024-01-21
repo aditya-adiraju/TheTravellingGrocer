@@ -1,6 +1,6 @@
 import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { importProvidersFrom, Injectable} from '@angular/core';
 import { SampleService } from './app/services/sample.service';
@@ -47,8 +47,17 @@ export class DataService {
     return this.http.post<any>(`${this.apiUrl}/deleteItem`, {polygonName});
   }
 
-  getAllFilteredItems(query: string): Observable<any[]> {
-    return this.http.post<any[]>(`${this.apiUrl}/getAllFilteredItems`, query);
+  getAllFilteredItems(q: string) {
+    const headers = new HttpHeaders()
+          .set('Authorization', 'my-auth-token')
+          .set('Content-Type', 'application/json');
+
+    this.http.post('http://localhost:3000/api/data/getAllFilteredItems', JSON.stringify({query: q}), {
+      headers: headers
+    })
+    .subscribe(data => {
+      console.log(data);
+    });
   }
 }
 
