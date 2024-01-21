@@ -9,7 +9,5 @@ import {Router} from "@angular/router";
   styleUrl: './landing-page.component.css'
 })
 export class LandingPageComponent {
-  constructor(router:Router) {
-    router.navigate(["edit-shopping"]);
-  }
+  constructor(router:Router) {}
 }
