@@ -13,7 +13,7 @@ import { SigninPageComponent } from './app/pages/signin-page/signin-page.compone
 import { MapComponent } from './app/pages/map/map.component';
 
 const routes: Routes = [
-  { path:'', component: LandingPageComponent},
+  { path: '', component: LandingPageComponent},
   { path: 'auth', component: AuthenticationPageComponent },
   { path: 'edit-shopping', component: EditShoppingListPageComponent },
   { path: 'signIn',component: SigninPageComponent},
