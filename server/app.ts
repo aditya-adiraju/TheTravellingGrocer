@@ -5,14 +5,15 @@ import * as path from 'path';
 
 import { connectToMongo } from './mongo';
 import dataRouter from './routes/data.router';
+const CORS = require('cors');
 
 const app = express();
+app.use(CORS());
 app.set('port', (process.env.PORT || 3000));
 app.use('/', express.static(path.join(__dirname, '../public')));
 app.use('/api/data', dataRouter)
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
 
 const main = async (): Promise<void> => {
   try {

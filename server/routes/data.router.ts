@@ -44,10 +44,10 @@ dataRouter.get('/deleteItem', validateAccessToken, async (req: Request, res: Res
     }
 });
 
-dataRouter.get('/getAllFilteredItems', validateAccessToken, async (req: Request, res: Response) => { 
+dataRouter.get('/getAllFilteredItems', validateAccessToken, async (req: Request, res: Response) => {
     try {
         const result = await getAllFilteredItemsFromDb(req.body.polygonName);
-        res.json(result);
+        res.send(result);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
