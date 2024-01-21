@@ -11,25 +11,58 @@ import {CommonModule} from "@angular/common";
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { SigninPageComponent } from './app/pages/signin-page/signin-page.component';
 import { MapComponent } from './app/pages/map/map.component';
+import {AuthModule} from "@auth0/auth0-angular";
+import {AuthGuard} from "@auth0/auth0-angular";
 
 const routes: Routes = [
-  { path: '', component: LandingPageComponent},
-  { path: 'auth', component: AuthenticationPageComponent },
-  { path: 'edit-shopping', component: EditShoppingListPageComponent },
-  { path: 'signIn',component: SigninPageComponent},
-  { path:'map', component: MapComponent}
-
+  {
+    path: '',
+    component: LandingPageComponent,
+  },
+  {
+    path: 'auth',
+    component: AuthenticationPageComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'signIn',
+    component: SigninPageComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'map',
+    component: MapComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: '**',
+    component: EditShoppingListPageComponent,
+    canActivate: [AuthGuard]
+  },
 ];
 
 bootstrapApplication(AppComponent, {
   providers: [
+    AuthGuard,
     {
         provide: 'photoUrl',
         useValue: 'https://picsum.photos',
     },
     { provide: SampleService, useClass: SampleService },
     importProvidersFrom(RouterModule.forRoot([...routes])),
-    importProvidersFrom(HttpClientModule, BrowserModule, CommonModule, ),
+    importProvidersFrom(
+      HttpClientModule,
+      BrowserModule,
+      CommonModule,
+    ),
+    importProvidersFrom(
+      AuthModule.forRoot({
+      domain: 'dev-xgzzro0vp02f000y.us.auth0.com',
+      clientId:'162Wa8ARJsbSB2UXaP94Cjoga9BVSDtF',
+      authorizationParams: {
+        redirect_uri:window.location.origin,
+      }
+    })),
     provideAnimations()
 ],
 }).catch(err => console.error(err));
