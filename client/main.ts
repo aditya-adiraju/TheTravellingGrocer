@@ -11,13 +11,16 @@ import {CommonModule} from "@angular/common";
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { SigninPageComponent } from './app/pages/signin-page/signin-page.component';
 import { MapComponent } from './app/pages/map/map.component';
-
+import { LocationComponent } from './app/pages/location/location.component';
+import { ShoppingComponent } from './app/pages/shopping/shopping.component';
 const routes: Routes = [
   { path: '', component: LandingPageComponent},
   { path: 'auth', component: AuthenticationPageComponent },
   { path: 'edit-shopping', component: EditShoppingListPageComponent },
   { path: 'signIn',component: SigninPageComponent},
-  { path:'map', component: MapComponent}
+  { path:'map', component: MapComponent},
+  { path:'location',component:LocationComponent},
+  { path:'shopping',component:ShoppingComponent},
 
 ];
 
