@@ -15,6 +15,7 @@ import { LocationComponent } from './app/pages/location/location.component';
 import { ShoppingComponent } from './app/pages/shopping/shopping.component';
 import { Observable } from 'rxjs';
 import { AuthGuard } from '@auth0/auth0-angular';
+import { DashboardComponent } from './app/pages/dashboard/dashboard.component';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -24,6 +25,7 @@ export const routes: Routes = [
   { path: 'map', component: MapComponent },
   { path: 'location', component: LocationComponent },
   { path: 'shopping', component: ShoppingComponent },
+  { path: 'dashboard', component: DashboardComponent },
 ];
 
 @Injectable({

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { OutlineButtonComponent } from '../../shared/outline-button/outline-button.component';
+import { LoginButtonComponent } from 'client/app/shared/login-button/login-button.component';
 import { Router } from '@angular/router';
 import { LoginButtonComponent } from 'client/app/shared/login-button/login-button.component';
 import { LogoutButtonComponent } from 'client/app/shared/logout-button/logout-button.component';
