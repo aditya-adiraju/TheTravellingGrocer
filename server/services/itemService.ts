@@ -113,7 +113,8 @@ export const getAllFilteredItemsFromDb = async (query: string)   => {
               fuzzy: {}
             }
           }
-        },
+        },{ $sort: { "score": -1 } },
+
         {
           $limit: 10
         },
@@ -126,6 +127,7 @@ export const getAllFilteredItemsFromDb = async (query: string)   => {
             "polygonName": 1,
           }
         }
+        
       ]
       const cursor = items.aggregate(pipeline);
       const result = cursor.toArray();
