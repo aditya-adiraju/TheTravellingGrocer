@@ -5,10 +5,12 @@ import * as path from 'path';
 const cors = require('cors');
 
 import { connectToMongo } from './mongo';
+const bodyParser = require('body-parser');
 import dataRouter from './routes/data.router';
 
 const app = express();
 app.use(cors())
+app.use(bodyParser.json());
 app.set('port', (process.env.PORT || 3000));
 app.use('/', express.static(path.join(__dirname, '../public')));
 app.use('/api/data', dataRouter)

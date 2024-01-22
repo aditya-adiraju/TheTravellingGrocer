@@ -1,8 +1,9 @@
 const express = require('express');
 const dataRouter = express.Router();
 import { Request, Response } from 'express';
+const tsp = require('../tsp_wrapper');
+
 import { addItemToDb, deleteItemFromDb, getAllItemsFromDb, getAllFilteredItemsFromDb  } from '../services/itemService';
-import { validateAccessToken } from "../middleware/auth0.middleware";
 
 dataRouter.get('/', async (req: Request, res: Response) => {
     try {
@@ -24,7 +25,7 @@ dataRouter.get('/getAllItems', async (req: Request, res: Response) => {
     }
 });
 
-dataRouter.get('/addItem', validateAccessToken, async (req: Request, res: Response) => {
+dataRouter.get('/addItem', async (req: Request, res: Response) => {
     try {
         const result = await addItemToDb(req.body.name, req.body.description, req.body.price, req.body.polygonName);
         res.json(result);
@@ -34,7 +35,7 @@ dataRouter.get('/addItem', validateAccessToken, async (req: Request, res: Respon
     }
 });
 
-dataRouter.get('/deleteItem', validateAccessToken, async (req: Request, res: Response) => {
+dataRouter.get('/deleteItem' , async (req: Request, res: Response) => {
     try {
         const result = await deleteItemFromDb(req.body.id);
         res.json(result);
@@ -44,10 +45,22 @@ dataRouter.get('/deleteItem', validateAccessToken, async (req: Request, res: Res
     }
 });
 
-dataRouter.get('/getAllFilteredItems', validateAccessToken, async (req: Request, res: Response) => { 
+dataRouter.post('/getAllFilteredItems', async (req: Request, res: Response) => {
     try {
-        const result = await getAllFilteredItemsFromDb(req.body.polygonName);
-        res.json(result);
+        console.log("RESPONSE HEADER",await req.body)
+        const result = await getAllFilteredItemsFromDb(req.body.query);
+        res.send(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
+dataRouter.post('/getOptimalRoute', async (req: Request, res: Response) => {
+    try {
+        const result = await tsp.solve(req.body.coordinates);
+        res.send(result);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });

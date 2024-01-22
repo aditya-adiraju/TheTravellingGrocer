@@ -1,0 +1,10 @@
+{
+    "domain": "dev-kjqgujsmp2ts6myo.us.auth0.com",
+    "clientId": "MnDXWz6JUiM219Ffhu2dIAesHKKmS28G",
+    "authorizationParams": {
+      "audience": "https://travellinggrocer.api.com"
+    },
+    "apiUri": "http://localhost:3000",
+    "appUri": "http://localhost:4200",
+    "errorPath": "/error"
+  }

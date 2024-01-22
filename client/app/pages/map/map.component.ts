@@ -2,6 +2,14 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MappedinLocation, MappedinDestinationSet, getVenue, showVenue, MappedinPolygon, E_SDK_EVENT } from "@mappedin/mappedin-js";
 import { augmentedPolygonThings } from "./defaultThings";
 import productData from "./products.json";
+import {DataService} from "../../../main";
+import {ShoppingListComponent} from "../../shared/shopping-list/shopping-list.component";
+import { ShoppingListManagerService } from 'client/app/services/shopping-list-manager.service';
+import {takeUntil} from "rxjs";
+import {GarbageCollectorComponent} from "../../shared/garbage-collector/garbage-collector.component";
+import {solveTSP} from "../../utils/tsp";
+import {FormsModule} from "@angular/forms";
+
 
 const options = {
   venue: "mappedin-demo-retail-2",
@@ -10,101 +18,76 @@ const options = {
   things: augmentedPolygonThings // ensures polygon name is fetched
 };
 
+
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [],
+  imports: [
+    ShoppingListComponent,
+    FormsModule
+  ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
-export class MapComponent implements OnInit {
+export class MapComponent extends GarbageCollectorComponent implements OnInit {
+  venue:any;
+  mapView:any;
+  @ViewChild("app", { static: false }) mapEl!: ElementRef<HTMLElement>;
 
-  async ngOnInit(): Promise<void> {
-    const venue = await getVenue(options);
-    const mapView = await showVenue(this.mapEl.nativeElement, venue);
+  constructor(private dataService: DataService, public shopService:ShoppingListManagerService){
+    super();
+  }
 
+  update(){
+    this.updateMap(this.shopService.getAccessibleShoppingListValue());
+  }
 
-    // const start = venue.locations.find((l) => l.name == "Entrance")!;
+  test(){
+    this.dataService.getAllItems().subscribe((data)=>console.log(data))
+  }
 
-    // const product1 = productData[1];
-    // const destination = venue.polygons.find((p) => p.name === product1.polygonName)!
-
-    // setTimeout(() => console.log(venue.polygons), 2000);
-
-    // const directions = start.directionsTo(destination);
-    // mapView.Journey.draw(directions, {pathOptions: {nearRadius: 0.5, farRadius: 0.7}});
-
-    //SAMPLE STRING
-    let products: string[] = ["Unico Pasta Sauce, Original", "Tortillas", "Cadbury Caramilk Dome Cake"];
-    
-    //Size of 2D array is length +1 so for the starting entrance 
-    const size = products.length + 1;
-    let twoDArray: number[][] = Array.from({length:size}, () => Array(size).fill(0));
-
-    //Initialize first row/column based on entrance
-    let i = 0;
-    let start = venue.locations.find((l) => l.name == "Entrance")!;
-    for (let j = i + 1; j < size; j++) {
-      let product2 = productData.find((w:any) => w.name === products[j-1]);
-      let end = venue.polygons.find((p) => p.name === product2?.polygonName);
-
-      let directionsDistance = start?.directionsTo(end!).distance!;
-      twoDArray[i][j] = directionsDistance;
-      twoDArray[j][i] = directionsDistance;
+  reorderList(src:any[], order:number[]){
+    let newList = new Array()
+    for(let i = 0; i < order.length; i++){
+      if(i == 0) continue;
+      newList.push(src[order[i] - 1]);
     }
+    return newList;
+  }
 
-    //Find rest of distances of products to other products
-    for (let i = 1; i < size; i++) {
-      let product1 = productData.find((v:any) => v.name === products[i-1]);
-      let start = venue.polygons.find((p) => p.name === product1?.polygonName);
-      for (let j = i + 1; j < size; j++) {
-        let product2 = productData.find((w:any) => w.name === products[j-1]);
-        let end = venue.polygons.find((p) => p.name === product2?.polygonName);
+  updateMap(resultArray:any){
+    const startLocation = this.venue.locations.find((l:any) => l.name == "Entrance")!;
 
-        let directionsDistance = start?.directionsTo(end!).distance!;
-        twoDArray[i][j] = directionsDistance;
-        twoDArray[j][i] = directionsDistance;
-      }
-    }
-
-    console.log(twoDArray);
-
-    //SEND THE MATRIX TO THE ALGORITHM AND WAIT FOR IT HERE
-
-    //SAMPLE DISTANCE LIST
-    let inputArray = new Array(74.99069792009288, 32.04512374311785, 25.18052353582995);
-    let resultArray = new Array();
-
-    //Turn the list of distance values into a list of items based on the 2D array
-    let startIndex = 0;
-    for (let i = 0; i < inputArray.length; i++) {
-      startIndex = twoDArray[startIndex].findIndex((num) => num == inputArray[i]);
-      resultArray.push(products[startIndex-1]);
-    }
-
-    console.log(resultArray);
-
-
-    const startLocation = venue.locations.find((l) => l.name == "Entrance")!;
 
     //Create an array of locations to use as waypoints for a
     //multi-destination journey.
     let destinations:MappedinPolygon[] = [];
+    const products:string[] = []
     for (let i = 0; i < resultArray.length; i++) {
       let product = productData.find((w:any) => w.name === resultArray[i]);
-      destinations.push(venue.polygons.find((p) => p.name === product?.polygonName)!);
-    }   
+      if(product){
+        products.push(product.name)
+        destinations.push(this.venue.polygons.find((p:any) => p.name === product?.polygonName)!);
+      }
+    }
 
-    console.log(destinations);
+    const result = this.calculateDistances(products, this.venue);
+    const order = solveTSP(result);
+
+    destinations = this.reorderList(destinations, order);
+    console.log(order, destinations);
+
+
 
 
     //Get directions from the start location to all destinations.
     const directions = startLocation.directionsTo(new MappedinDestinationSet(destinations));
 
+
     //Pass the directions to Journey to be drawn on the map.
     //Set the paths as interactive so the user can click to
     //highlight each leg in the journey.
-    mapView.Journey.draw(directions, {
+    this.mapView.Journey.draw(directions, {
       pathOptions: {
         nearRadius: 0.5,
         farRadius: 0.7
@@ -116,19 +99,62 @@ export class MapComponent implements OnInit {
       }
     });
 
+
     //Clickable functionality here
     let step = 0;
-    mapView.on(E_SDK_EVENT.CLICK, (payload) => {
+    this.mapView.on(E_SDK_EVENT.CLICK, (payload:any) => {
       const currentStep = step % destinations.length;
-      if (destinations[currentStep].map !== mapView.currentMap) {
-        mapView.setMap(destinations[currentStep].map);
+      if (destinations[currentStep].map !== this.mapView.currentMap) {
+        this.mapView.setMap(destinations[currentStep].map);
       } else {
-        mapView.Journey.setStep(++step % destinations.length);
+        this.mapView.Journey.setStep(++step % destinations.length);
       }
     });
-
   }
 
-  @ViewChild("app", { static: false }) mapEl!: ElementRef<HTMLElement>;
-}
 
+  async ngOnInit(): Promise<void> {
+    this.venue = await getVenue(options);
+    this.mapView = await showVenue(this.mapEl.nativeElement, this.venue);
+
+
+    let resultArray = new Array();
+    this.shopService.getAccessibleShoppingList().pipe(
+        takeUntil(this.unsubscribe)
+    ).subscribe((list)=>{
+      this.updateMap(list)
+    });
+  }
+
+  private calculateDistances(products: string[], venue: any) {
+    const size = products.length + 1;
+    let twoDArray: number[][] = Array.from({ length: size }, () => Array(size).fill(0));
+
+    //Initialize first row/column based on entrance
+    let i = 0;
+    let start = venue.locations.find((l:any) => l.name == "Entrance")!;
+    for (let j = i + 1; j < size; j++) {
+      let product2 = productData.find((w: any) => w.name === products[j - 1]);
+      let end = venue.polygons.find((p:any) => p.name === product2?.polygonName);
+
+      let directionsDistance = start?.directionsTo(end!).distance!;
+      twoDArray[i][j] = directionsDistance;
+      twoDArray[j][i] = directionsDistance;
+    }
+
+    //Find rest of distances of products to other products
+    for (let i = 1; i < size; i++) {
+      let product1 = productData.find((v: any) => v.name === products[i - 1]);
+      let start = venue.polygons.find((p:any) => p.name === product1?.polygonName);
+      for (let j = i + 1; j < size; j++) {
+        let product2 = productData.find((w: any) => w.name === products[j - 1]);
+        let end = venue.polygons.find((p:any) => p.name === product2?.polygonName);
+
+        let directionsDistance = start?.directionsTo(end!).distance!;
+        twoDArray[i][j] = directionsDistance;
+        twoDArray[j][i] = directionsDistance;
+      }
+    }
+    return twoDArray;
+  }
+}

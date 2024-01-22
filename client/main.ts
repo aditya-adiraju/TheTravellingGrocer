@@ -1,6 +1,6 @@
 import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { importProvidersFrom, Injectable} from '@angular/core';
 import { SampleService } from './app/services/sample.service';
@@ -22,7 +22,7 @@ export const routes: Routes = [
   { path: 'auth', component: AuthenticationPageComponent },
   { path: 'edit-shopping', component: EditShoppingListPageComponent },
   { path: 'signIn', component: SigninPageComponent },
-  { path: 'map', component: MapComponent , canActivate: [AuthGuard] },
+  { path: 'map', component: MapComponent },
   { path: 'location', component: LocationComponent },
   { path: 'shopping', component: ShoppingComponent },
   { path: 'dashboard', component: DashboardComponent },
@@ -49,8 +49,24 @@ export class DataService {
     return this.http.post<any>(`${this.apiUrl}/deleteItem`, {polygonName});
   }
 
-  getAllFilteredItems(query: string): Observable<any[]> {
-    return this.http.post<any[]>(`${this.apiUrl}/getAllFilteredItems`, { query });
+  getAllFilteredItems(q: string) {
+    const headers = new HttpHeaders()
+          .set('Authorization', 'my-auth-token')
+          .set('Content-Type', 'application/json');
+
+    return this.http.post('http://localhost:3000/api/data/getAllFilteredItems', JSON.stringify({query: q}), {
+      headers: headers
+    })
+  }
+
+  getOptimalRoute(arr: number[][]) {
+    const headers = new HttpHeaders()
+          .set('Authorization', 'my-auth-token')
+          .set('Content-Type', 'application/json');
+
+    return this.http.post('http://localhost:3000/api/data/getOptimalRoute', JSON.stringify({array: arr}), {
+      headers: headers
+    })
   }
 }
 
@@ -62,7 +78,7 @@ bootstrapApplication(AppComponent, {
     },
     { provide: SampleService, useClass: SampleService },
     importProvidersFrom(RouterModule.forRoot([...routes])),
-    importProvidersFrom(HttpClientModule, BrowserModule, CommonModule),
-    provideAnimations(),
-  ],
-}).catch((err) => console.error(err));
+    importProvidersFrom(HttpClientModule, BrowserModule, CommonModule, ),
+    provideAnimations()
+],
+}).catch(err => console.error(err));

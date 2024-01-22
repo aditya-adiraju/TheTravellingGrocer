@@ -1,0 +1,17 @@
+<div class="autocomplete-container relative">
+  <input
+    type="text"
+    [(ngModel)]="searchTerm"
+    placeholder="Type here"
+    class="input input-bordered input-success w-full max-w-xs"
+    (input)="onInputChange()"
+  />
+  <ul *ngIf="showSuggestions" class="menu bg-base-200 absolute w-[100%] z-[2000]">
+    <li
+      *ngFor="let item of filteredItems"
+      (click)="selectItem(item)"
+    >
+      <a>{{ item }}</a>
+    </li>
+  </ul>
+</div>
