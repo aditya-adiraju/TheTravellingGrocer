@@ -48,7 +48,7 @@ export const deleteItemFromDb = async (polygonName: string) => {
 
       const query0 = { polygonName: polygonName };
       const result0 = await items.findOne(query0);
-      if (result0 === null) { 
+      if (result0 === null) {
         console.log(`No item found with that polygonName ${polygonName}`);
         return;
       }
@@ -87,7 +87,7 @@ export const getAllItemsFromDb = async () => {
       const result = items.find(query, options).toArray();
       console.log(result);
       return result;
-      
+
     }   finally {
       setTimeout(() => {client.close()}, 1500)
     }
@@ -108,7 +108,7 @@ export const getAllFilteredItemsFromDb = async (query: string)   => {
           $search: {
             index: "name_index",
             text: {
-              query: query, 
+              query: query,
               path: "name",
               fuzzy: {}
             }
@@ -131,8 +131,8 @@ export const getAllFilteredItemsFromDb = async (query: string)   => {
       const result = cursor.toArray();
       return result;
     } finally {
-      
-      setTimeout(() => {client.close()}, 1500)
+
+      // setTimeout(() => {client.close()}, 1500)
     }
   };
   const result = await getAll(query);
