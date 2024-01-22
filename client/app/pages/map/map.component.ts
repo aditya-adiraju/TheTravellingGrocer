@@ -1,7 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-
-import { MappedinLocation, MappedinDestinationSet, getVenue, showVenue, MappedinPolygon, E_SDK_EVENT, Mappedin, MapView } from "@mappedin/mappedin-js";
-
+import { MappedinLocation, MappedinDestinationSet, getVenue, showVenue, MappedinPolygon, E_SDK_EVENT } from "@mappedin/mappedin-js";
 import { augmentedPolygonThings } from "./defaultThings";
 import productData from "./products.json";
 import {DataService} from "../../../main";
@@ -9,6 +7,8 @@ import {ShoppingListComponent} from "../../shared/shopping-list/shopping-list.co
 import { ShoppingListManagerService } from 'client/app/services/shopping-list-manager.service';
 import {takeUntil} from "rxjs";
 import {GarbageCollectorComponent} from "../../shared/garbage-collector/garbage-collector.component";
+import {solveTSP} from "../../utils/tsp";
+import {FormsModule} from "@angular/forms";
 
 
 const options = {
@@ -23,90 +23,59 @@ const options = {
   selector: 'app-map',
   standalone: true,
   imports: [
-    ShoppingListComponent
+    ShoppingListComponent,
+    FormsModule
   ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
 export class MapComponent extends GarbageCollectorComponent implements OnInit {
+  venue:any;
+  mapView:any;
   @ViewChild("app", { static: false }) mapEl!: ElementRef<HTMLElement>;
+
   constructor(private dataService: DataService, public shopService:ShoppingListManagerService){
     super();
   }
+
+  update(){
+    this.updateMap(this.shopService.getAccessibleShoppingListValue());
+  }
+
   test(){
     this.dataService.getAllItems().subscribe((data)=>console.log(data))
   }
 
-
-  async ngOnInit(): Promise<void> {
-    const venue = await getVenue(options);
-    const mapView = await showVenue(this.mapEl.nativeElement, venue);
-
-
-    // resultArray = ["Unico Pasta Sauce, Original", "Tortillas", "Cadbury Caramilk Dome Cake"]; TEST 
-
-    const innerHelper = (products: string[]) => {
-    // //SAMPLE STRING
-    // let products: string[] = ["Unico Pasta Sauce, Original", "Tortillas", "Cadbury Caramilk Dome Cake"];
-
-    //Size of 2D array is length +1 so for the starting entrance
-    let twoDArray: number[][] = this.calculateDistances(products, venue);
-
-    console.log(twoDArray);
-    let inputArray: number[] = []; 
-    this.dataService.getOptimalRoute(twoDArray).subscribe((data)=>{
-      // this.drawMap(data, twoDArray, products, venue, mapView)
-      console.log(data);
-    })
-
-  }
-  this.shopService.getAccessibleShoppingList().pipe(
-    takeUntil(this.unsubscribe)
-  ).subscribe((list)=>{
-    innerHelper(list);
-  });
-
-}
-
-
-  private drawMap(inputArray: number[], twoDArray: number[][], products: string[], venue: Mappedin, mapView: MapView) {
-    let resultArray = new Array();
-
-    //Turn the list of distance values into a list of items based on the 2D array
-    let startIndex = 0;
-    for (let i = 0; i < inputArray.length; i++) {
-      startIndex = twoDArray[startIndex].findIndex((num) => num == inputArray[i]);
-      resultArray.push(products[startIndex - 1]);
+  reorderList(src:any[], order:number[]){
+    let newList = new Array()
+    for(let i = 0; i < order.length; i++){
+      if(i == 0) continue;
+      newList.push(src[order[i] - 1]);
     }
+    return newList;
+  }
 
-
-    // //Turn the list of distance values into a list of items based on the 2D array
-    // let startIndex = 0;
-    // for (let i = 0; i < inputArray.length; i++) {
-    //   startIndex = twoDArray[startIndex].findIndex((num) => num == inputArray[i]);
-    //   resultArray.push(products[startIndex-1]);
-    // }
-
-
-    // console.log(resultArray);
-
-    
-
-
-
-    const startLocation = venue.locations.find((l) => l.name == "Entrance")!;
+  updateMap(resultArray:any){
+    const startLocation = this.venue.locations.find((l:any) => l.name == "Entrance")!;
 
 
     //Create an array of locations to use as waypoints for a
     //multi-destination journey.
-    let destinations: MappedinPolygon[] = [];
+    let destinations:MappedinPolygon[] = [];
+    const products:string[] = []
     for (let i = 0; i < resultArray.length; i++) {
-      let product = productData.find((w: any) => w.name === resultArray[i]);
-      destinations.push(venue.polygons.find((p) => p.name === product?.polygonName)!);
+      let product = productData.find((w:any) => w.name === resultArray[i]);
+      if(product){
+        products.push(product.name)
+        destinations.push(this.venue.polygons.find((p:any) => p.name === product?.polygonName)!);
+      }
     }
 
+    const result = this.calculateDistances(products, this.venue);
+    const order = solveTSP(result);
 
-    console.log(destinations);
+    destinations = this.reorderList(destinations, order);
+    console.log(order, destinations);
 
 
 
@@ -118,7 +87,7 @@ export class MapComponent extends GarbageCollectorComponent implements OnInit {
     //Pass the directions to Journey to be drawn on the map.
     //Set the paths as interactive so the user can click to
     //highlight each leg in the journey.
-    mapView.Journey.draw(directions, {
+    this.mapView.Journey.draw(directions, {
       pathOptions: {
         nearRadius: 0.5,
         farRadius: 0.7
@@ -133,26 +102,40 @@ export class MapComponent extends GarbageCollectorComponent implements OnInit {
 
     //Clickable functionality here
     let step = 0;
-    mapView.on(E_SDK_EVENT.CLICK, (payload) => {
+    this.mapView.on(E_SDK_EVENT.CLICK, (payload:any) => {
       const currentStep = step % destinations.length;
-      if (destinations[currentStep].map !== mapView.currentMap) {
-        mapView.setMap(destinations[currentStep].map);
+      if (destinations[currentStep].map !== this.mapView.currentMap) {
+        this.mapView.setMap(destinations[currentStep].map);
       } else {
-        mapView.Journey.setStep(++step % destinations.length);
+        this.mapView.Journey.setStep(++step % destinations.length);
       }
     });
   }
 
-  private calculateDistances(products: string[], venue: Mappedin) {
+
+  async ngOnInit(): Promise<void> {
+    this.venue = await getVenue(options);
+    this.mapView = await showVenue(this.mapEl.nativeElement, this.venue);
+
+
+    let resultArray = new Array();
+    this.shopService.getAccessibleShoppingList().pipe(
+        takeUntil(this.unsubscribe)
+    ).subscribe((list)=>{
+      this.updateMap(list)
+    });
+  }
+
+  private calculateDistances(products: string[], venue: any) {
     const size = products.length + 1;
     let twoDArray: number[][] = Array.from({ length: size }, () => Array(size).fill(0));
 
     //Initialize first row/column based on entrance
     let i = 0;
-    let start = venue.locations.find((l) => l.name == "Entrance")!;
+    let start = venue.locations.find((l:any) => l.name == "Entrance")!;
     for (let j = i + 1; j < size; j++) {
       let product2 = productData.find((w: any) => w.name === products[j - 1]);
-      let end = venue.polygons.find((p) => p.name === product2?.polygonName);
+      let end = venue.polygons.find((p:any) => p.name === product2?.polygonName);
 
       let directionsDistance = start?.directionsTo(end!).distance!;
       twoDArray[i][j] = directionsDistance;
@@ -162,10 +145,10 @@ export class MapComponent extends GarbageCollectorComponent implements OnInit {
     //Find rest of distances of products to other products
     for (let i = 1; i < size; i++) {
       let product1 = productData.find((v: any) => v.name === products[i - 1]);
-      let start = venue.polygons.find((p) => p.name === product1?.polygonName);
+      let start = venue.polygons.find((p:any) => p.name === product1?.polygonName);
       for (let j = i + 1; j < size; j++) {
         let product2 = productData.find((w: any) => w.name === products[j - 1]);
-        let end = venue.polygons.find((p) => p.name === product2?.polygonName);
+        let end = venue.polygons.find((p:any) => p.name === product2?.polygonName);
 
         let directionsDistance = start?.directionsTo(end!).distance!;
         twoDArray[i][j] = directionsDistance;
@@ -175,5 +158,3 @@ export class MapComponent extends GarbageCollectorComponent implements OnInit {
     return twoDArray;
   }
 }
-
-

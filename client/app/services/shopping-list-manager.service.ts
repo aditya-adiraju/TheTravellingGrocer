@@ -46,6 +46,10 @@ export class ShoppingListManagerService {
     return this.accessibleShoppingListSubject.asObservable();
   }
 
+  public getAccessibleShoppingListValue(){
+    return this.accessibleShoppingListSubject.value;
+  }
+
   private updateLocalStorage(){
     localStorage.setItem(this.LOCAL_STORAGE_KEY_ACCESSIBLE, JSON.stringify(this.accessibleShoppingListSubject.value))
     localStorage.setItem(this.LOCAL_STORAGE_KEY_UPDATED, JSON.stringify(this.updatedShoppingListSubject.value))

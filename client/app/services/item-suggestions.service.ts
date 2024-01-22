@@ -24,6 +24,7 @@ export class ItemSuggestionsService{
 
   //update the suggestions when query changes
   updateItemSuggestions(query:string){
-    this.database.getAllFilteredItems(query).subscribe((val:any)=>this.itemSuggestions.next(val.map((item:any)=>item.name)))
+    if(query.length) this.database.getAllFilteredItems(query).subscribe((val:any)=>this.itemSuggestions.next(val.map((item:any)=>item.name)))
+    else this.itemSuggestions.next([])
   }
 }

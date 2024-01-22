@@ -13,8 +13,9 @@
           <span>{{item.description}}</span>
         </div>
       </td>
-      <td>
+      <td class="flex flex-col items-center">
         <span class="p-2 text-md text-black font-normal">${{item.price}}</span>
+        <button class="btn btn-sm btn-outline" (click)="remove(item)">Remove</button>
       </td>
     </tr>
   </table>

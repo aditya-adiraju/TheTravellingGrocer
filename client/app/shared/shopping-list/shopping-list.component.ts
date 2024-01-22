@@ -27,6 +27,10 @@ export class ShoppingListComponent extends GarbageCollectorComponent implements 
 
   closeShoppingWindow(){}
 
+  remove(item:Item){
+    this.listManager.removeItem(item.name)
+  }
+
   updateShoppingList(){
     this.listManager.updateShoppingList()
   }
