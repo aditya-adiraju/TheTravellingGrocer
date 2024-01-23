@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MappedinLocation, MappedinDestinationSet, getVenue, showVenue, MappedinPolygon, E_SDK_EVENT } from "@mappedin/mappedin-js";
 import { augmentedPolygonThings } from "./defaultThings";
-import productData from "./products.json";
+// import pData from "./products.json";
 import {DataService} from "../../../main";
 import {ShoppingListComponent} from "../../shared/shopping-list/shopping-list.component";
 import { ShoppingListManagerService } from 'client/app/services/shopping-list-manager.service';
@@ -9,7 +9,14 @@ import {takeUntil} from "rxjs";
 import {GarbageCollectorComponent} from "../../shared/garbage-collector/garbage-collector.component";
 import {solveTSP} from "../../utils/tsp";
 import {FormsModule} from "@angular/forms";
+import {lastValueFrom} from "rxjs";
 
+interface Product {
+  name: string;
+  description: string;
+  price: number;
+  polygonName: string;
+}
 
 const options = {
   venue: "mappedin-demo-retail-2",
@@ -17,7 +24,6 @@ const options = {
   clientSecret: "RJyRXKcryCMy4erZqqCbuB1NbR66QTGNXVE0x3Pg6oCIlUR1",
   things: augmentedPolygonThings // ensures polygon name is fetched
 };
-
 
 @Component({
   selector: 'app-map',
@@ -33,11 +39,14 @@ export class MapComponent extends GarbageCollectorComponent implements OnInit {
   venue:any;
   mapView:any;
   @ViewChild("app", { static: false }) mapEl!: ElementRef<HTMLElement>;
+  productData: Product[]= [];
 
   constructor(private dataService: DataService, public shopService:ShoppingListManagerService){
     super();
   }
-
+  async getProductData(){
+    this.productData = await lastValueFrom(this.dataService.getAllItems());
+  }
   update(){
     this.updateMap(this.shopService.getAccessibleShoppingListValue());
   }
@@ -55,7 +64,7 @@ export class MapComponent extends GarbageCollectorComponent implements OnInit {
     return newList;
   }
 
-  updateMap(resultArray:any){
+  async updateMap(resultArray:any){
     const startLocation = this.venue.locations.find((l:any) => l.name == "Entrance")!;
 
 
@@ -64,7 +73,7 @@ export class MapComponent extends GarbageCollectorComponent implements OnInit {
     let destinations:MappedinPolygon[] = [];
     const products:string[] = []
     for (let i = 0; i < resultArray.length; i++) {
-      let product = productData.find((w:any) => w.name === resultArray[i]);
+      let product = this.productData.find((w:any) => w.name === resultArray[i]);
       if(product){
         products.push(product.name)
         destinations.push(this.venue.polygons.find((p:any) => p.name === product?.polygonName)!);
@@ -72,7 +81,9 @@ export class MapComponent extends GarbageCollectorComponent implements OnInit {
     }
 
     const result = this.calculateDistances(products, this.venue);
-    const order = solveTSP(result);
+    // this.dataService.getOptimalRoute(result).subscribe((data)=>{ console.log(data)});
+
+    const order = solveTSP(result); 
 
     destinations = this.reorderList(destinations, order);
     console.log(order, destinations);
@@ -116,8 +127,7 @@ export class MapComponent extends GarbageCollectorComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.venue = await getVenue(options);
     this.mapView = await showVenue(this.mapEl.nativeElement, this.venue);
-
-
+    this.getProductData();
     let resultArray = new Array();
     this.shopService.getAccessibleShoppingList().pipe(
         takeUntil(this.unsubscribe)
@@ -134,7 +144,7 @@ export class MapComponent extends GarbageCollectorComponent implements OnInit {
     let i = 0;
     let start = venue.locations.find((l:any) => l.name == "Entrance")!;
     for (let j = i + 1; j < size; j++) {
-      let product2 = productData.find((w: any) => w.name === products[j - 1]);
+      let product2 = this.productData.find((w: any) => w.name === products[j - 1]);
       let end = venue.polygons.find((p:any) => p.name === product2?.polygonName);
 
       let directionsDistance = start?.directionsTo(end!).distance!;
@@ -144,10 +154,10 @@ export class MapComponent extends GarbageCollectorComponent implements OnInit {
 
     //Find rest of distances of products to other products
     for (let i = 1; i < size; i++) {
-      let product1 = productData.find((v: any) => v.name === products[i - 1]);
+      let product1 = this.productData.find((v: any) => v.name === products[i - 1]);
       let start = venue.polygons.find((p:any) => p.name === product1?.polygonName);
       for (let j = i + 1; j < size; j++) {
-        let product2 = productData.find((w: any) => w.name === products[j - 1]);
+        let product2 = this.productData.find((w: any) => w.name === products[j - 1]);
         let end = venue.polygons.find((p:any) => p.name === product2?.polygonName);
 
         let directionsDistance = start?.directionsTo(end!).distance!;

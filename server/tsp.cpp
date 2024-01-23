@@ -20,8 +20,8 @@ struct Node{
     int num;
     vector<int> neighbours;
 };
-extern "C++"{
-  vector<int> Solve(const vector<vector<double> >& adj){
+
+vector<int> Solve(const vector<vector<double>> adj){
       vector<bool> visited(adj.size(), false);
       priority_queue<pair<double,pair<int,int> >, vector<pair<double,pair<int,int> > >, CompareFirstElement> pq;
       pq.push(make_pair(0, make_pair(0, 0)));
@@ -61,10 +61,12 @@ extern "C++"{
           }
       }
       return order;
-  }
 }
 
+
 EMSCRIPTEN_BINDINGS(tsp_module) {
-    emscripten::register_vector<int>("VectorInt");
-    emscripten::function("Solve", &Solve, emscripten::allow_raw_pointers());
+    emscripten::register_vector<int>("vector<int>");
+    emscripten::register_vector<double>("vector<double>");
+    emscripten::register_vector<vector<double>>("vector<vector<double>>");
+    emscripten::function("Solve", &Solve);
 }
