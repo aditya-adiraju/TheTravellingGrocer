@@ -29,4 +29,4 @@ npm run dev
 ```
 
 
-Made with ❤️  by @aditya-adiraju, @CWRalph, @eric-y33, @parm-is-coding
+Made with ❤️  by [@aditya-adiraju], [@CWRalph], [@eric-y33], [@parm-is-coding]
