@@ -1,13 +1,29 @@
 const Module = require('./tsp.js');
 
-Module.onRuntimeInitialized = function () {
-    // Export the Solve function to be used in Node.js
-    Module.exports.Solve = function(adj: number[][]): number[] {
-        const resultPointer = Module._Solve(adj);
-        const result: number[] = Module.getVectorInt(resultPointer);
-        Module._free(resultPointer);  // Free the allocated memory
-        return result;
-    };
-};
+export function solveTSP(adj: number[][]): number[] {
+  try {
+    console.log('ENTER solveTSP');
+    var matrix = new Module['vector<vector<double>>']();
 
-module.exports = Module;
+    for (var row of adj) {
+      var converted_row = new Module['vector<double>']();
+      for (const element of row) {
+        converted_row.push_back(element);
+      }
+      matrix.push_back(converted_row);
+    }
+
+    var i_result = Module['Solve'](matrix);
+
+    var result = [];
+    for (let i = 0; i < i_result.size(); i++) {
+      result.push(i_result.get(i));
+    }
+
+    console.log(result, 'Solve TSP');
+    return result;
+  } catch (err) {
+    console.log(err);
+    return []
+  }
+}

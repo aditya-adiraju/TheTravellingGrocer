@@ -1,8 +1,7 @@
 const express = require('express');
 const dataRouter = express.Router();
 import { Request, Response } from 'express';
-const tsp = require('../tsp_wrapper');
-
+import { solveTSP } from '../tsp_wrapper';
 import { addItemToDb, deleteItemFromDb, getAllItemsFromDb, getAllFilteredItemsFromDb  } from '../services/itemService';
 
 dataRouter.get('/', async (req: Request, res: Response) => {
@@ -57,9 +56,10 @@ dataRouter.post('/getAllFilteredItems', async (req: Request, res: Response) => {
 });
 
 
-dataRouter.post('/getOptimalRoute', async (req: Request, res: Response) => {
+dataRouter.post('/getOptimalRoute', (req: Request, res: Response) => {
     try {
-        const result = await tsp.solve(req.body.coordinates);
+        const result = solveTSP(req.body.coordinates);
+        console.log(result);
         res.send(result);
     } catch (error) {
         console.error(error);
