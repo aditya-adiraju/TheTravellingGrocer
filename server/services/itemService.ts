@@ -1,10 +1,7 @@
-import { MongoClient, ObjectId} from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import Item from '../models/item';
 
-const uri = process.env['MONGODB_URI'] as string;
-const db_name = "grocery_store";
-
-const client = new MongoClient(uri);
+const db_name = 'grocery_store';
 
 export const addItemToDb = async (
   name: string,
@@ -18,6 +15,9 @@ export const addItemToDb = async (
     price: number,
     polygon: string
   ) => {
+    // https://www.mongodb.com/community/forums/t/typeerror-cannot-read-property-startswith-of-undefined/146999/9
+    const uri = process.env['MONGODB_URI'] as string;
+    const client = new MongoClient(uri);
     try {
       await client.connect();
       const database = client.db(db_name);
@@ -32,7 +32,9 @@ export const addItemToDb = async (
       console.log(`A document was inserted with the _id: ${result.insertedId}`);
       return result;
     } finally {
-      setTimeout(() => {client.close()}, 15)
+      setTimeout(() => {
+        client.close();
+      }, 15);
     }
   };
   const result = await insert(name, description, price, polygon);
@@ -41,16 +43,19 @@ export const addItemToDb = async (
 
 export const deleteItemFromDb = async (polygonName: string) => {
   const deleteItem = async (polygonName: string) => {
+    // https://www.mongodb.com/community/forums/t/typeerror-cannot-read-property-startswith-of-undefined/146999/9
+    const uri = process.env['MONGODB_URI'] as string;
+    const client = new MongoClient(uri);
     try {
       await client.connect();
-      const database = client.db("grocery_store");
+      const database = client.db('grocery_store');
       const items = database.collection('items');
 
       const query0 = { polygonName: polygonName };
       const result0 = await items.findOne(query0);
       if (result0 === null) {
         console.log(`No item found with that polygonName ${polygonName}`);
-        return;
+        return null;
       }
 
       const id = result0._id;
@@ -60,7 +65,9 @@ export const deleteItemFromDb = async (polygonName: string) => {
       console.log(`${result.deletedCount} document(s) deleted`);
       return result;
     } finally {
-      setTimeout(() => {client.close()}, 1500)
+      setTimeout(() => {
+        client.close();
+      }, 1500);
     }
   };
   const result = await deleteItem(polygonName);
@@ -69,6 +76,9 @@ export const deleteItemFromDb = async (polygonName: string) => {
 
 export const getAllItemsFromDb = async () => {
   const getAll = async () => {
+    // https://www.mongodb.com/community/forums/t/typeerror-cannot-read-property-startswith-of-undefined/146999/9
+    const uri = process.env['MONGODB_URI'] as string;
+    const client = new MongoClient(uri);
     try {
       await client.connect();
       const database = client.db(db_name);
@@ -87,17 +97,21 @@ export const getAllItemsFromDb = async () => {
       const result = items.find(query, options).toArray();
       console.log(result);
       return result;
-
-    }   finally {
-      setTimeout(() => {client.close()}, 1500)
+    } finally {
+      setTimeout(() => {
+        client.close();
+      }, 1500);
     }
   };
   const result = await getAll();
   return result;
 };
 
-export const getAllFilteredItemsFromDb = async (query: string)   => {
+export const getAllFilteredItemsFromDb = async (query: string) => {
   const getAll = async (query: string) => {
+    // https://www.mongodb.com/community/forums/t/typeerror-cannot-read-property-startswith-of-undefined/146999/9
+    const uri = process.env['MONGODB_URI'] as string;
+    const client = new MongoClient(uri);
     try {
       await client.connect();
       const database = client.db(db_name);
@@ -106,45 +120,43 @@ export const getAllFilteredItemsFromDb = async (query: string)   => {
       const pipeline = [
         {
           $search: {
-            index: "name_index",
+            index: 'name_index',
             text: {
               query: query,
-              path: "name",
-              fuzzy: {}
-            }
-          }
-        },{ $sort: { "score": -1 } },
+              path: 'name',
+              fuzzy: {},
+            },
+          },
+        },
+        { $sort: { score: -1 } },
 
         {
-          $limit: 10
+          $limit: 10,
         },
         {
           $project: {
-            "_id": 0,
-            "name": 1,
-            "description": 1,
-            "price": 1,
-            "polygonName": 1,
-          }
-        }
-        
-      ]
+            _id: 0,
+            name: 1,
+            description: 1,
+            price: 1,
+            polygonName: 1,
+          },
+        },
+      ];
       const cursor = items.aggregate(pipeline);
       const result = cursor.toArray();
       return result;
     } finally {
-
       // setTimeout(() => {client.close()}, 1500)
     }
   };
   const result = await getAll(query);
   return result;
-}
+};
 
-
-module.exports = {
+export default {
   addItemToDb,
   deleteItemFromDb,
   getAllItemsFromDb,
-  getAllFilteredItemsFromDb
+  getAllFilteredItemsFromDb,
 };

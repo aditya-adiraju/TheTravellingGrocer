@@ -1,8 +1,11 @@
+// emcc -Oz tsp.cpp -lembind -o tsp.js -s EXPORT_ES6=1 -s MODULARIZE=1 -s EXPORT_NAME=loadWASM -s SINGLE_FILE=1
 #include <iostream>
 #include <vector>
 #include <utility>
 #include <queue>
 #include <emscripten/bind.h>
+#include <emscripten/emscripten.h>
+
 
 using std::vector;
 using std::pair;
@@ -21,7 +24,7 @@ struct Node{
     vector<int> neighbours;
 };
 
-vector<int> Solve(const vector<vector<double>> adj){
+vector<int> EMSCRIPTEN_KEEPALIVE Solve(const vector<vector<double>> adj){
       vector<bool> visited(adj.size(), false);
       priority_queue<pair<double,pair<int,int> >, vector<pair<double,pair<int,int> > >, CompareFirstElement> pq;
       pq.push(make_pair(0, make_pair(0, 0)));
@@ -63,10 +66,15 @@ vector<int> Solve(const vector<vector<double>> adj){
       return order;
 }
 
+int EMSCRIPTEN_KEEPALIVE add(int x, int y) {
+    return x + y;
+}
+
 
 EMSCRIPTEN_BINDINGS(tsp_module) {
-    emscripten::register_vector<int>("vector<int>");
-    emscripten::register_vector<double>("vector<double>");
-    emscripten::register_vector<vector<double>>("vector<vector<double>>");
+    emscripten::register_vector<int>("IntList");
+    emscripten::register_vector<double>("DoubleList");
+    emscripten::register_vector<vector<double>>("DoubleListList");
     emscripten::function("Solve", &Solve);
+    emscripten::function("add", &add);
 }

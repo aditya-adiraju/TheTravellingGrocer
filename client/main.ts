@@ -64,9 +64,11 @@ export class DataService {
           .set('Authorization', 'my-auth-token')
           .set('Content-Type', 'application/json');
 
-    return this.http.post('http://localhost:3000/api/data/getOptimalRoute', JSON.stringify({array: arr}), {
+    const result = this.http.post('http://localhost:3000/api/data/getOptimalRoute', JSON.stringify({array: arr}), {
       headers: headers
     })
+
+    return result;
   }
 }
 
