@@ -2,7 +2,6 @@ import {Injectable, OnInit} from '@angular/core';
 import {DataService} from "../../main";
 import {BehaviorSubject, Observable, takeUntil} from "rxjs";
 import {Item} from "../constants/Item";
-import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +12,6 @@ export class ItemSuggestionsService{
   constructor(private database: DataService) {
     database.getAllItems().subscribe((items)=>{
       this.items = items
-      console.log(items, "SUGGESTION SERVICE")
     });
   }
 

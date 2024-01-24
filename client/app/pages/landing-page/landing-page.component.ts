@@ -17,7 +17,6 @@ export class LandingPageComponent {
     this.router.navigate(["auth"]);
   }
   goToSignIn(){
-    console.log("hello world");
     this.router.navigate(["signIn"]);
 
   }

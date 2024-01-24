@@ -1,29 +1,31 @@
-const Module = require('./tsp.js');
+import loadWASM from './tsp.js';
 
-export function solveTSP(adj: number[][]): number[] {
+export async function solveTSP(adj: number[][]): Promise<number[]> {
+  const wasm_module = await loadWASM();
   try {
-    console.log('ENTER solveTSP');
-    var matrix = new Module['vector<vector<double>>']();
-
+    var matrix = new wasm_module['DoubleListList']();
     for (var row of adj) {
-      var converted_row = new Module['vector<double>']();
+      var converted_row = new wasm_module.DoubleList();
       for (const element of row) {
         converted_row.push_back(element);
       }
       matrix.push_back(converted_row);
     }
 
-    var i_result = Module['Solve'](matrix);
+    var i_result = wasm_module['Solve'](matrix);
 
     var result = [];
     for (let i = 0; i < i_result.size(); i++) {
       result.push(i_result.get(i));
     }
 
+    i_result.delete();
+    matrix.delete();
+
     console.log(result, 'Solve TSP');
     return result;
   } catch (err) {
     console.log(err);
-    return []
+    return [];
   }
 }
