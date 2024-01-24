@@ -14,7 +14,7 @@ export class LandingPageComponent {
   constructor(private router:Router){}
   title = "The Traveling Grocer";
   gotonext(){
-    this.router.navigate(["auth"]);
+    this.router.navigate(["dashboard"]);
   }
   goToSignIn(){
     this.router.navigate(["signIn"]);
